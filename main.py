@@ -14,12 +14,10 @@ def is_dev_attach() -> None:
         sys.exit('Device not connected')
 
 def main() -> None:
-    # is_dev_attach()
+    is_dev_attach()
 
     log_inst = log.crt_logger()
     is_exist, is_empty = fs_ops.is_exist_rem_dir()
-
-    print(is_exist, is_empty)
 
     upl.prep_transf(is_exist, is_empty, log_inst)
 
