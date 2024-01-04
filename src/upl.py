@@ -73,9 +73,8 @@ def upload(command: List[str], loc_files: List[str], logger: logging.Logger) -> 
 
         if out.returncode == 0:
             form_out = out.stdout.strip('\n')
-            print(form_out)
             logger.info(form_out)
         else:
             form_err = out.stderr.strip('\n')
-            print(form_err)
             logger.error(form_err)
+            raise RuntimeError(form_err)
