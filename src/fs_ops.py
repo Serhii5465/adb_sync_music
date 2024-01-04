@@ -1,5 +1,6 @@
 import os
 import logging
+import sys
 from py_exec_cmd import exec_cmd
 from typing import Tuple, List
 from src import constants
@@ -30,6 +31,16 @@ def get_loc_files() -> List[str]:
     Returns:
         List of relative paths to files.
     """
+
+    dir = constants.ROOT_UNIX_SRC_DIR() + constants.NAME_SYNC_DIR()
+    try:
+        result = os.listdir(dir)
+    except FileNotFoundError:
+        sys.exit(dir + 'is missing')
+    else:
+        if len(result) == 0:
+            raise IndexError(dir + 'is empty')
+
     os.chdir(constants.ROOT_UNIX_SRC_DIR())
 
     cmd_get_loc_files = ['find', constants.NAME_SYNC_DIR(), '-type', 'f']
@@ -62,12 +73,10 @@ def delete_remt_files(files: List[str], logger: logging.Logger) -> None:
         cmd_del_file = ['adb', 'shell', 'rm', '']
         logger.info('Removing files...')
         for i in files:
-            print(i)
             logger.info('Deletable file: ' + i)
             cmd_del_file[len(cmd_del_file) - 1] = i
             out = exec_cmd.get_cmd_out(cmd_del_file)
             if out.returncode != 0:
-                print(out.stderr)
                 logger.error(out.stderr)
 
         #: Utility 'find' removing empty folders
@@ -77,8 +86,7 @@ def delete_remt_files(files: List[str], logger: logging.Logger) -> None:
 
         str_empty_dirs = exec_cmd.get_bety_cmd_out(cmd_del_empt_dir)
         if str_empty_dirs != '':
-            print('Removing empty directories')
+            logger.info('Removing empty directories...')
             list_empty_dirs = str_empty_dirs.split('\n')
             for i in list_empty_dirs:
-                print(i)
                 logger.info('Deletable directory: ' + i)
