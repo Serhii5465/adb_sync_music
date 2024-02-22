@@ -12,7 +12,7 @@ def NAME_SYNC_DIR() -> str:
 #     return '/storage/self/primary/'
 
 def ROOT_UNIX_SRC_DIR() -> str:
-    return '/cygdrive/e/media/'
+    return '/cygdrive/d/media/'
 
 def ROOT_DEST_DIR() -> str:
     return '/storage/F32E-95B4/'
