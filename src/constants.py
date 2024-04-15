@@ -1,4 +1,4 @@
-from py_exec_cmd import exec_cmd
+from src import proc
 
 def NAME_SYNC_DIR() -> str:
     return 'Music/'
@@ -12,7 +12,7 @@ def NAME_SYNC_DIR() -> str:
 #     return '/storage/self/primary/'
 
 def ROOT_UNIX_SRC_DIR() -> str:
-    return '/cygdrive/d/media/'
+    return '/cygdrive/e/media/'
 
 def ROOT_DEST_DIR() -> str:
     return '/storage/F32E-95B4/'
@@ -21,4 +21,4 @@ def FULL_PATH_UNIX_SRC_ROOT() -> str:
     return ROOT_UNIX_SRC_DIR() + NAME_SYNC_DIR()
 
 def WIN_SRC_DIR() -> str:
-    return exec_cmd.get_bety_cmd_out(['cygpath.exe', '--windows', FULL_PATH_UNIX_SRC_ROOT()])
+    return proc.get_bety_cmd_out(['cygpath.exe', '--windows', FULL_PATH_UNIX_SRC_ROOT()])

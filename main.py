@@ -1,14 +1,12 @@
 import sys
-from py_exec_cmd import exec_cmd
-from src import log, upl, fs_ops
+from src import log, upl, fs_ops, proc
 
 def is_dev_attach() -> None:
     """
     Verifies connection of USB device by his serial number.
     """
     serial_no = '293290c6'
-    cmd_state = ['adb', 'devices']
-    out = exec_cmd.get_bety_cmd_out(cmd_state)
+    out = proc.get_cmd_out(['adb', 'devices']).stdout.strip('\n')
 
     if out.find(serial_no) == -1:
         sys.exit('Device not connected')

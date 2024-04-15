@@ -1,5 +1,4 @@
-from src import constants, fs_ops
-from py_exec_cmd import exec_cmd
+from src import constants, fs_ops, proc
 from typing import List
 import logging
 
@@ -17,7 +16,7 @@ def prep_transf(is_exist: str, is_empty: str, logger: logging.Logger) -> None:
     if is_exist == '1' and is_empty == '1':
         print('Music folder not exist.\nCreating...')
         cmd_adb_mkdir = ['adb', 'shell', 'mkdir', constants.ROOT_DEST_DIR() + constants.NAME_SYNC_DIR()]
-        exec_cmd.run_cmd(cmd_adb_mkdir)
+        proc.run_cmd(cmd_adb_mkdir)
 
         upload(cmd_adb_push, list_loc_files, logger)
 
@@ -65,11 +64,11 @@ def upload(command: List[str], loc_files: List[str], logger: logging.Logger) -> 
         cmd_conv_path[len(cmd_conv_path) - 1] = val
 
         #: Inserting path to file on transmit side.
-        val = exec_cmd.get_bety_cmd_out(cmd_conv_path)
+        val = proc.get_bety_cmd_out(cmd_conv_path)
         command[len(command) - 2] = val
 
         #: Beginning of upload
-        out = exec_cmd.get_cmd_out(command)
+        out = proc.get_cmd_out(command)
 
         if out.returncode == 0:
             form_out = out.stdout.strip('\n')

@@ -1,9 +1,8 @@
 import os
 import logging
 import sys
-from py_exec_cmd import exec_cmd
 from typing import Tuple, List
-from src import constants
+from src import constants, proc
 
 def is_exist_rem_dir() -> Tuple[str, str]:
     """
@@ -20,8 +19,8 @@ def is_exist_rem_dir() -> Tuple[str, str]:
                         ' -mindepth 1 -maxdepth 1 | '
                         'read && echo 0 || echo 1']  # 0 - not empty, 1 - empty
 
-    is_exist = exec_cmd.get_bety_cmd_out(cmd_is_exist_dir)
-    is_empty = exec_cmd.get_bety_cmd_out(cmd_is_empty_dir)
+    is_exist = proc.get_bety_cmd_out(cmd_is_exist_dir)
+    is_empty = proc.get_bety_cmd_out(cmd_is_empty_dir)
 
     return is_exist, is_empty
 
@@ -44,7 +43,7 @@ def get_loc_files() -> List[str]:
     os.chdir(constants.ROOT_UNIX_SRC_DIR())
 
     cmd_get_loc_files = ['find', constants.NAME_SYNC_DIR(), '-type', 'f']
-    list_loc_files = exec_cmd.get_bety_cmd_out(cmd_get_loc_files).split('\n')
+    list_loc_files = proc.get_bety_cmd_out(cmd_get_loc_files).split('\n')
 
     return list_loc_files
 
@@ -60,7 +59,7 @@ def get_rem_files() -> List[str]:
                                 + constants.NAME_SYNC_DIR()
                                 + ' -type f']
 
-    list_rem_files = exec_cmd.get_bety_cmd_out(cmd_adb_get_rem_files).split('\n')
+    list_rem_files = proc.get_bety_cmd_out(cmd_adb_get_rem_files).split('\n')
     return list_rem_files
 
 def delete_remt_files(files: List[str], logger: logging.Logger) -> None:
@@ -75,7 +74,7 @@ def delete_remt_files(files: List[str], logger: logging.Logger) -> None:
         for i in files:
             logger.info('Deletable file: ' + i)
             cmd_del_file[len(cmd_del_file) - 1] = i
-            out = exec_cmd.get_cmd_out(cmd_del_file)
+            out = proc.get_cmd_out(cmd_del_file)
             if out.returncode != 0:
                 logger.error(out.stderr)
 
@@ -84,7 +83,7 @@ def delete_remt_files(files: List[str], logger: logging.Logger) -> None:
                             'find ' + constants.ROOT_DEST_DIR()
                             + constants.NAME_SYNC_DIR() + ' -type d -delete']
 
-        str_empty_dirs = exec_cmd.get_bety_cmd_out(cmd_del_empt_dir)
+        str_empty_dirs = proc.get_bety_cmd_out(cmd_del_empt_dir)
         if str_empty_dirs != '':
             logger.info('Removing empty directories...')
             list_empty_dirs = str_empty_dirs.split('\n')

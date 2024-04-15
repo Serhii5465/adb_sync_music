@@ -11,7 +11,7 @@ def crt_logger() -> logging.Logger:
     """
     date_now = datetime.now().strftime("%Y-%m-%d_%H\uA789%M\uA789%S")
     
-    root_log_dir = '/cygdrive/e/logs/adb_sync_music/'
+    root_log_dir = '/cygdrive/d/logs/adb_sync_music/'
     full_path_log_file = root_log_dir + '/' + date_now + '.log'
 
     Path(root_log_dir).mkdir(parents=True, exist_ok=True)
